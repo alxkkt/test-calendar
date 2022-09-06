@@ -1,0 +1,20 @@
+.table {
+  display: table;
+
+  width: 100%;
+}
+
+.row {
+  display: table-row;
+  width: 100%;
+}
+
+.cell {
+  display: table-cell;
+  height: 100%;
+
+  font-size: 24px;
+  font-weight: bold;
+
+  outline: 1px solid tomato;
+}
