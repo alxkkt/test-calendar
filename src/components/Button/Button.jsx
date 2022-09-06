@@ -1,7 +1,13 @@
+import { memo } from "react";
+
 import styles from "./Button.module.scss";
 
 const Button = () => {
-  return <button>+</button>;
+  return (
+    <button type="button" aria-label="add event" className={styles.btn}>
+      +
+    </button>
+  );
 };
 
-export default Button;
+export default memo(Button);

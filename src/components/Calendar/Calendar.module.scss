@@ -2,19 +2,70 @@
   display: table;
 
   width: 100%;
+  margin-top: 20px;
+}
+
+.tableBody {
+  height: 100%;
+}
+
+.caption {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
 }
 
 .row {
-  display: table-row;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
 }
 
 .cell {
-  display: table-cell;
+  width: calc(100% / 7);
+  height: 110px;
+
+  font-size: 12px;
+
+  border-bottom: 0.5px solid #000;
+  border-right: 0.5px solid #000;
+
+  &:nth-child(7n + 1) {
+    border-left: 0.5px solid #000;
+  }
+
+  &:nth-child(-n + 7) {
+    border-top: 0.5px solid #000;
+  }
+}
+
+[data-month="current"] {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.active {
+  background-color: rgba(210, 67, 53, 0.5);
+}
+
+.cellInner {
+  display: flex;
+  justify-content: space-between;
   height: 100%;
+  width: 100%;
 
-  font-size: 24px;
-  font-weight: bold;
+  padding: 10px;
+}
 
-  outline: 1px solid tomato;
+.otherMonth {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.day,
+.date {
+  font-size: 16px;
 }
