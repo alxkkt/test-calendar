@@ -1,6 +1,8 @@
 .Slider {
   display: flex;
   justify-content: space-between;
+
+  position: relative;
 }
 
 .arrowBtn {
@@ -44,6 +46,7 @@
   font-weight: 700;
   font-size: 16px;
   letter-spacing: 0.05em;
+  cursor: default;
 
   background-color: rgba(127, 255, 212, 0.7);
   border-radius: 20px;

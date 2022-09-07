@@ -1,6 +1,6 @@
 import getAllDaysInMonth from "./getAllDaysInMonth";
 
-export default function getFullMonth(array, value) {
+export default function getFullMonth(array) {
   const dayOfWeek = array[0].getDay();
   let currentYear = array[0].getFullYear();
   let currentMonth = array[0].getMonth();
@@ -11,6 +11,15 @@ export default function getFullMonth(array, value) {
   let missingQuantity = 42 - array.length;
 
   switch (dayOfWeek) {
+    case 0: // Sunday
+      return [
+        ...prevMonthDates.splice(
+          prevMonthDates.length - 6,
+          prevMonthDates.length
+        ),
+        ...array,
+        nextMonthDates[0],
+      ];
     case 1: // Monday
       return [...array, ...nextMonthDates.splice(0, missingQuantity)];
     case 2: // Tuesday
@@ -54,15 +63,6 @@ export default function getFullMonth(array, value) {
         ),
         ...array,
         ...nextMonthDates.splice(0, missingQuantity - 5),
-      ];
-    case 0: // Sunday
-      return [
-        ...prevMonthDates.splice(
-          prevMonthDates.length - 6,
-          prevMonthDates.length
-        ),
-        ...array,
-        nextMonthDates[0],
       ];
     default:
       return array;

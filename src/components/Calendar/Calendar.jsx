@@ -7,8 +7,6 @@ import getFullMonth from "../../shared/functions/getFullMonth";
 const Calendar = ({ currentDate, monthDates }) => {
   const fullMonth = getFullMonth(monthDates);
 
-  console.log(fullMonth);
-
   const elements = fullMonth.map((item) => {
     const [day] = item.toString().split(" ");
     const date = item.getDate();

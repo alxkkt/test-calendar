@@ -1,5 +1,13 @@
 export default function getAllDaysInMonth(year, month) {
-  const date = new Date(year, month, 1);
+  let date = null;
+
+  if (month === 12) {
+    date = new Date(year + 1, 0, 1);
+  } else if (month === -1) {
+    date = new Date(year, 11, 1);
+  } else {
+    date = new Date(year, month, 1);
+  }
 
   const dates = [];
 
