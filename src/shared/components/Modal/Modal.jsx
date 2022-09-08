@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-
 import { createPortal } from "react-dom";
+import PropTypes from "prop-types";
+
+import Icon from "../Icon";
 
 import styles from "./Modal.module.scss";
 
@@ -15,11 +17,9 @@ const Modal = ({ close, children }) => {
 
   useEffect(() => {
     window.addEventListener("keydown", onEscPress);
-    document.body.style.overflow = "hidden";
 
     return () => {
       window.removeEventListener("keydown", onEscPress);
-      document.body.style.overflow = "auto";
     };
   });
 
@@ -31,10 +31,20 @@ const Modal = ({ close, children }) => {
 
   return createPortal(
     <div className={styles.Overlay} onClick={closeModal}>
-      <div className={styles.Modal}>{children}</div>
+      <div className={styles.Modal}>
+        <button type="button" className={styles.btnClose} onClick={close}>
+          <Icon name={"close"} width={15} height={15} className={styles.icon} />
+        </button>
+        {children}
+      </div>
     </div>,
     modalRoot
   );
 };
 
 export default Modal;
+
+Modal.propTypes = {
+  close: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};

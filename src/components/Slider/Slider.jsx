@@ -1,31 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
+import PropTypes from "prop-types";
 import moment from "moment";
 
 import DatePicker from "../DatePicker";
+import useFilter from "../../shared/hooks/useFilter";
 
 import styles from "./Slider.module.scss";
 
 const Slider = ({ currentDate, onMonthChange, handleDatePick }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const filter = useFilter();
+  console.log("currentDate: ", currentDate);
+  console.log("filter: ", filter);
 
-  const handleDecrement = () => {
-    onMonthChange(-1);
+  const handleMonthChange = useCallback(
+    (value) => {
+      onMonthChange(value);
 
-    setIsFilterOpen(false);
-  };
-
-  const handleIncrement = () => {
-    onMonthChange(1);
-
-    setIsFilterOpen(false);
-  };
+      setIsFilterOpen(false);
+    },
+    [onMonthChange]
+  );
 
   return (
     <div className={styles.Slider}>
       <button
         type="button"
-        onClick={handleDecrement}
+        onClick={() => handleMonthChange(-1)}
         className={styles.arrowBtn}
+        data-type="decrement"
       >
         &#60;
       </button>
@@ -37,8 +40,9 @@ const Slider = ({ currentDate, onMonthChange, handleDatePick }) => {
       </p>
       <button
         type="button"
-        onClick={handleIncrement}
+        onClick={() => handleMonthChange(1)}
         className={styles.arrowBtn}
+        data-type="increment"
       >
         &#62;
       </button>
@@ -52,4 +56,10 @@ const Slider = ({ currentDate, onMonthChange, handleDatePick }) => {
   );
 };
 
-export default Slider;
+export default memo(Slider);
+
+Slider.propTypes = {
+  currentDate: PropTypes.any.isRequired,
+  onMonthChange: PropTypes.func.isRequired,
+  handleDatePick: PropTypes.func.isRequired,
+};

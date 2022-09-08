@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import moment from "moment";
-import { nanoid } from "nanoid";
 
 import styles from "./DatePicker.module.scss";
 
@@ -17,22 +17,25 @@ const DatePicker = ({ isOpen, toggleFilter, date, handleDatePick }) => {
     toggleFilter(!isOpen);
   };
 
-  const handleYearChange = (value) => {
-    const newDate = new Date(
-      filterDate.getFullYear() + value,
-      filterDate.getMonth()
-    );
+  const handleYearChange = useCallback(
+    (value) => {
+      const newDate = new Date(
+        filterDate.getFullYear() + value,
+        filterDate.getMonth()
+      );
 
-    setFilterDate(newDate);
-  };
+      setFilterDate(newDate);
+    },
+    [filterDate]
+  );
 
-  const onYearIncrease = () => {
+  const onYearIncrease = useCallback(() => {
     handleYearChange(1);
-  };
+  }, [handleYearChange]);
 
-  const onYearDecrease = () => {
+  const onYearDecrease = useCallback(() => {
     handleYearChange(-1);
-  };
+  }, [handleYearChange]);
 
   const items = monthsList.map(({ id, value }) => (
     <li
@@ -81,3 +84,10 @@ const DatePicker = ({ isOpen, toggleFilter, date, handleDatePick }) => {
 };
 
 export default DatePicker;
+
+DatePicker.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  toggleFilter: PropTypes.func.isRequired,
+  date: PropTypes.any.isRequired,
+  handleDatePick: PropTypes.func.isRequired,
+};

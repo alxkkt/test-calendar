@@ -1,15 +1,18 @@
+import { useMemo } from "react";
+import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 import moment from "moment";
 
-import styles from "./Calendar.module.scss";
+import Cell from "./Cell";
 import getFullMonth from "../../shared/functions/getFullMonth";
 
+import styles from "./Calendar.module.scss";
+
 const Calendar = ({ currentDate, monthDates }) => {
-  const fullMonth = getFullMonth(monthDates);
+  const fullMonth = useMemo(() => getFullMonth(monthDates), [monthDates]);
 
   const elements = fullMonth.map((item) => {
     const [day] = item.toString().split(" ");
-    const date = item.getDate();
 
     const isToday =
       moment(item).format("D/MM/YYYY") ===
@@ -18,18 +21,13 @@ const Calendar = ({ currentDate, monthDates }) => {
     const isCurrentMonth = item.getMonth() === currentDate.getMonth();
 
     return (
-      <td
+      <Cell
         key={nanoid()}
-        className={
-          isToday ? `${styles.cell} ${styles.active}` : `${styles.cell}`
-        }
-        data-month={isCurrentMonth ? "current" : "different"}
-      >
-        <div className={styles.cellInner}>
-          <p className={styles.day}>{day.slice(0, 2)}</p>
-          <p className={styles.date}>{date}</p>
-        </div>
-      </td>
+        isCurrentMonth={isCurrentMonth}
+        isToday={isToday}
+        day={day}
+        cellDate={item}
+      />
     );
   });
 
@@ -49,3 +47,8 @@ const Calendar = ({ currentDate, monthDates }) => {
 };
 
 export default Calendar;
+
+Calendar.propTypes = {
+  currentDate: PropTypes.any.isRequired,
+  monthDates: PropTypes.arrayOf(PropTypes.any.isRequired),
+};

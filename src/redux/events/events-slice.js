@@ -1,22 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
+
+const initialState = {
+  items: [],
+  filter: "",
+};
 
 const eventsSlice = createSlice({
   name: "events",
-  initialState: {
-    items: [],
-  },
+  initialState: initialState,
   reducers: {
     addEvent: {
       reducer(store, { payload }) {
         return {
-          items: [...store.events.items, payload],
+          ...store,
+          items: [...store.items, payload],
         };
       },
       prepare(data) {
+        const today = new Date();
+        const date = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          today.getHours(),
+          today.getMinutes()
+        );
         const newEvent = {
           ...data,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
+          id: nanoid(),
+          createdAt: date.toString(),
+          updatedAt: date.toString(),
         };
 
         return {
@@ -26,23 +40,46 @@ const eventsSlice = createSlice({
     },
     editEvent: {
       reducer(store, { payload }) {
-        const filteredItems = store.events.items.filter(
-          ({ id }) => id !== payload.id
-        );
+        const filteredItems = store.items.filter(({ id }) => id !== payload.id);
         return {
+          ...store,
           items: [...filteredItems, payload],
+        };
+      },
+      prepare(data) {
+        const today = new Date();
+        const date = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          today.getHours(),
+          today.getMinutes()
+        );
+
+        const updatedEvent = {
+          ...data,
+          updatedAt: date.toString(),
+        };
+
+        return {
+          payload: updatedEvent,
         };
       },
     },
     deleteEvent: {
       reducer(store, { payload }) {
-        const { id } = payload;
-
-        const filteredItems = store.events.items.filter(
-          (item) => item.id !== id
-        );
+        const filteredItems = store.items.filter((item) => item.id !== payload);
         return {
+          ...store,
           items: [...filteredItems],
+        };
+      },
+    },
+    setFilter: {
+      reducer(store, { payload }) {
+        return {
+          ...store,
+          filter: payload,
         };
       },
     },

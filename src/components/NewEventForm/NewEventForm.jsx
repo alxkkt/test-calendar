@@ -1,24 +1,48 @@
 import { memo, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 import Icon from "../../shared/components/Icon";
 
 import styles from "./NewEventForm.module.scss";
 
-const NewEventForm = ({ close }) => {
+const NewEventForm = ({
+  close,
+  eventHandler,
+  sign,
+  data = null,
+  setEditedItem,
+  handleDeleteClick,
+}) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
     time: "",
   });
+  const isEmpty = !formData.title || !formData.date;
 
   useEffect(() => {
-    const openedTask = localStorage.getItem("opened-task");
-    if (!openedTask) return;
-  }, []);
+    if (data) {
+      setFormData({
+        ...data,
+      });
+    }
+  }, [data]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    eventHandler(formData);
+
+    setFormData({
+      title: "",
+      description: "",
+      date: "",
+      time: "",
+    });
+    setEditedItem(null);
+
+    close();
   };
 
   const handleInputChange = ({ target }) => {
@@ -28,22 +52,38 @@ const NewEventForm = ({ close }) => {
       ...prevState,
       [name]: value,
     }));
-  };
 
-  const isEmpty = !formData.title || !formData.date;
+    if (data) {
+      setEditedItem((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
-      <button type="button" className={styles.btnClose} onClick={close}>
-        <Icon
-          name={"icon-close"}
-          width={15}
-          height={15}
-          className={styles.icon}
-        />
-      </button>
       <form onSubmit={handleSubmit}>
-        <h1 className={styles.sign}>Add new idea item</h1>
+        <div className={styles.topTitle}>
+          <div className={styles.signContainer}>
+            <p className={styles.sign}>{sign}</p>
+            {sign === "edit event" && (
+              <div className={styles.editIcon}>
+                <Icon
+                  name={"edit"}
+                  width={15}
+                  height={15}
+                  className={styles.icon}
+                />
+              </div>
+            )}
+          </div>
+          {sign === "edit event" && (
+            <span className={styles.eventCreated}>
+              Created at: {data.createdAt.toString()}
+            </span>
+          )}
+        </div>
         <div className={styles.titleWrapper}>
           <label className={styles.titleLabel} htmlFor="title">
             Title<sup className={styles.star}>*</sup>
@@ -96,12 +136,42 @@ const NewEventForm = ({ close }) => {
             />
           </div>
         </div>
-        <button type="submit" disabled={isEmpty} className={styles.saveBtn}>
-          Save
-        </button>
+        <div className={styles.btnContainer}>
+          {sign === "edit event" && (
+            <button
+              type="button"
+              className={styles.deleteBtn}
+              onClick={() => handleDeleteClick(data.id)}
+            >
+              <Icon
+                name={"delete"}
+                width={15}
+                height={15}
+                className={styles.icon}
+              />
+            </button>
+          )}
+          <button type="submit" disabled={isEmpty} className={styles.saveBtn}>
+            Save
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
 export default memo(NewEventForm);
+
+NewEventForm.propTypes = {
+  close: PropTypes.func.isRequired,
+  eventHandler: PropTypes.func.isRequired,
+  sign: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+  }),
+  setEditedItem: PropTypes.func.isRequired,
+  handleDeleteClick: PropTypes.func.isRequired,
+};

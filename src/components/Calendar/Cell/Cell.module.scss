@@ -1,0 +1,73 @@
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: calc(100% / 7);
+  height: 110px;
+  padding: 10px;
+
+  font-size: 12px;
+
+  border-bottom: 0.5px solid #000;
+  border-right: 0.5px solid #000;
+
+  &:nth-child(7n + 1) {
+    border-left: 0.5px solid #000;
+  }
+
+  &:nth-child(-n + 7) {
+    border-top: 0.5px solid #000;
+  }
+}
+
+[data-current-month="true"] {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.active {
+  background-color: rgba(210, 67, 53, 0.8);
+}
+
+.cellInner {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.otherMonth {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.day,
+.date {
+  font-size: 16px;
+}
+
+.eventList {
+  padding: 15px;
+  overflow: scroll;
+}
+
+.item {
+  padding: 2px;
+  padding-left: 5px;
+  font-size: 12px;
+  cursor: pointer;
+
+  border-bottom: 1px solid rgb(163, 163, 163);
+  border-radius: 5px;
+
+  width: 5rem;
+
+  transition: all 500ms ease-out;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  &:hover {
+    border-bottom: 1px solid rgba(127, 255, 212, 0.7);
+  }
+}
