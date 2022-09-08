@@ -5,17 +5,17 @@ import DatePicker from "../DatePicker";
 
 import styles from "./Slider.module.scss";
 
-const Slider = ({ currentDate, onClick }) => {
+const Slider = ({ currentDate, onMonthChange, handleDatePick }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handleDecrement = () => {
-    onClick(-1);
+    onMonthChange(-1);
 
     setIsFilterOpen(false);
   };
 
   const handleIncrement = () => {
-    onClick(1);
+    onMonthChange(1);
 
     setIsFilterOpen(false);
   };
@@ -46,6 +46,7 @@ const Slider = ({ currentDate, onClick }) => {
         isOpen={isFilterOpen}
         toggleFilter={setIsFilterOpen}
         date={currentDate}
+        handleDatePick={handleDatePick}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 export default function getAllDaysInMonth(year, month) {
-  let date = null;
+  let date = new Date(year, month, 1);
   const dates = [];
 
   if (month === 12) {
@@ -20,8 +20,6 @@ export default function getAllDaysInMonth(year, month) {
     }
 
     return dates;
-  } else {
-    date = new Date(year, month, 1);
   }
 
   while (date.getMonth() === month) {

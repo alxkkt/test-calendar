@@ -12,8 +12,6 @@ export default function getFullMonth(array) {
 
   switch (dayOfWeek) {
     case 0: // Sunday
-      console.log(prevMonthDates);
-      // console.log(currentMonth - 1);
       return [
         ...prevMonthDates.splice(
           prevMonthDates.length - 6,

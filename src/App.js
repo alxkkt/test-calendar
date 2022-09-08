@@ -3,15 +3,17 @@ import { useState } from "react";
 import "./App.scss";
 
 import Calendar from "./components/Calendar";
-import Button from "./components/Button";
+import NewEventButton from "./components/NewEventButton";
 import Slider from "./components/Slider";
 
 import getAllDaysInMonth from "./shared/functions/getAllDaysInMonth";
 
 function App() {
   const [date, setDate] = useState(new Date());
-
-  const dates = getAllDaysInMonth(date.getFullYear(), date.getMonth());
+  const currentMonthDates = getAllDaysInMonth(
+    date.getFullYear(),
+    date.getMonth()
+  );
 
   const handleMonthChange = (value) => {
     const newDate = new Date(date.getFullYear(), date.getMonth() + value);
@@ -19,11 +21,21 @@ function App() {
     setDate(newDate);
   };
 
+  const handleDatePick = (year, month) => {
+    const newDate = new Date(year, month);
+
+    setDate(newDate);
+  };
+
   return (
     <div className="container">
-      <Button />
-      <Slider currentDate={date} onClick={handleMonthChange} />
-      <Calendar currentDate={date} monthDates={dates} />
+      <NewEventButton />
+      <Slider
+        currentDate={date}
+        onMonthChange={handleMonthChange}
+        handleDatePick={handleDatePick}
+      />
+      <Calendar currentDate={date} monthDates={currentMonthDates} />
     </div>
   );
 }
