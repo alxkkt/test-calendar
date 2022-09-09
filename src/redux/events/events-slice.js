@@ -79,7 +79,7 @@ const eventsSlice = createSlice({
       reducer(store, { payload }) {
         return {
           ...store,
-          filter: payload,
+          filter: payload.toString(),
         };
       },
     },

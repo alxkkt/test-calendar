@@ -1,17 +1,13 @@
-import { useState, useEffect, memo, useCallback } from "react";
+import { useState, memo, useCallback } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
 import DatePicker from "../DatePicker";
-import useFilter from "../../shared/hooks/useFilter";
 
 import styles from "./Slider.module.scss";
 
 const Slider = ({ currentDate, onMonthChange, handleDatePick }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const filter = useFilter();
-  console.log("currentDate: ", currentDate);
-  console.log("filter: ", filter);
 
   const handleMonthChange = useCallback(
     (value) => {
@@ -48,7 +44,7 @@ const Slider = ({ currentDate, onMonthChange, handleDatePick }) => {
       </button>
       <DatePicker
         isOpen={isFilterOpen}
-        toggleFilter={setIsFilterOpen}
+        togglePicker={setIsFilterOpen}
         date={currentDate}
         handleDatePick={handleDatePick}
       />

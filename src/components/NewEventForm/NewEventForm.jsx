@@ -22,11 +22,11 @@ const NewEventForm = ({
   const isEmpty = !formData.title || !formData.date;
 
   useEffect(() => {
-    if (data) {
-      setFormData({
-        ...data,
-      });
-    }
+    if (!data) return;
+
+    setFormData({
+      ...data,
+    });
   }, [data]);
 
   const handleSubmit = (e) => {
@@ -40,7 +40,9 @@ const NewEventForm = ({
       date: "",
       time: "",
     });
-    setEditedItem(null);
+
+    // console.log(setEditedItem);
+    // setEditedItem(null);
 
     close();
   };
@@ -80,7 +82,7 @@ const NewEventForm = ({
           </div>
           {sign === "edit event" && (
             <span className={styles.eventCreated}>
-              Created at: {data.createdAt.toString()}
+              Created At: {data.createdAt.toString().slice(0, 33)}
             </span>
           )}
         </div>
@@ -172,6 +174,6 @@ NewEventForm.propTypes = {
     date: PropTypes.string.isRequired,
     time: PropTypes.string.isRequired,
   }),
-  setEditedItem: PropTypes.func.isRequired,
-  handleDeleteClick: PropTypes.func.isRequired,
+  setEditedItem: PropTypes.func,
+  handleDeleteClick: PropTypes.func,
 };

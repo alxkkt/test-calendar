@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
@@ -6,7 +6,7 @@ import styles from "./DatePicker.module.scss";
 
 import monthsList from "../../shared/data/monthsList.json";
 
-const DatePicker = ({ isOpen, toggleFilter, date, handleDatePick }) => {
+const DatePicker = ({ isOpen, togglePicker, date, handleDatePick }) => {
   const [filterDate, setFilterDate] = useState(date);
   const currentYear = date.getFullYear();
 
@@ -14,7 +14,7 @@ const DatePicker = ({ isOpen, toggleFilter, date, handleDatePick }) => {
     const year = filterDate.getFullYear();
     handleDatePick(year, month);
 
-    toggleFilter(!isOpen);
+    togglePicker(!isOpen);
   };
 
   const handleYearChange = useCallback(
@@ -87,7 +87,7 @@ export default DatePicker;
 
 DatePicker.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  toggleFilter: PropTypes.func.isRequired,
+  togglePicker: PropTypes.func.isRequired,
   date: PropTypes.any.isRequired,
   handleDatePick: PropTypes.func.isRequired,
 };
