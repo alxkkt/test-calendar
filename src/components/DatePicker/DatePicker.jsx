@@ -1,16 +1,16 @@
-import { useState, useCallback, useEffect } from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
+import { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
-import styles from "./DatePicker.module.scss";
+import styles from './DatePicker.module.scss';
 
-import monthsList from "../../shared/data/monthsList.json";
+import monthsList from '../../shared/data/monthsList.json';
 
 const DatePicker = ({ isOpen, togglePicker, date, handleDatePick }) => {
   const [filterDate, setFilterDate] = useState(date);
   const currentYear = date.getFullYear();
 
-  const handleMonthClick = (month) => {
+  const handleMonthClick = month => {
     const year = filterDate.getFullYear();
     handleDatePick(year, month);
 
@@ -18,7 +18,7 @@ const DatePicker = ({ isOpen, togglePicker, date, handleDatePick }) => {
   };
 
   const handleYearChange = useCallback(
-    (value) => {
+    value => {
       const newDate = new Date(
         filterDate.getFullYear() + value,
         filterDate.getMonth()
@@ -69,7 +69,7 @@ const DatePicker = ({ isOpen, togglePicker, date, handleDatePick }) => {
         >
           &#60;
         </button>
-        <p className={styles.year}>{moment(filterDate).format("YYYY")}</p>
+        <p className={styles.year}>{moment(filterDate).format('YYYY')}</p>
         <button
           type="button"
           onClick={onYearIncrease}
