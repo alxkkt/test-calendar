@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { nanoid } from "nanoid";
-import PropTypes from "prop-types";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
-import useEventsByDate from "../../../shared/hooks/useEvents";
-import Modal from "../../../shared/components/Modal";
-import NewEventForm from "../../NewEventForm";
+import useEventsByDate from '../../../shared/hooks/useEvents';
+import Modal from '../../../shared/components/Modal';
+import NewEventForm from '../../NewEventForm';
 
-import { actions } from "../../../redux/events/events-slice";
+import {
+  editEvent,
+  deleteEvent,
+} from '../../../redux/events/events-operations';
 
-import styles from "./Cell.module.scss";
+import styles from './Cell.module.scss';
 
 const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -20,8 +23,8 @@ const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
 
   const closeModal = () => setIsEditorOpen(false);
 
-  const handleEventClick = (idx) => {
-    const item = events.find((event) => event.id === idx);
+  const handleEventClick = idx => {
+    const item = events.find(event => event.id === idx);
 
     setSelectedEvent(item);
 
@@ -29,8 +32,8 @@ const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
   };
 
   const onEventEdit = () => {
-    const changedEvent = events.find((evt) => evt.id === selectedEvent.id);
-    const action = actions.editEvent({
+    const changedEvent = events.find(evt => evt.id === selectedEvent.id);
+    const action = editEvent({
       ...selectedEvent,
       createdAt: changedEvent.createdAt,
     });
@@ -38,15 +41,15 @@ const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
     dispatch(action);
   };
 
-  const handleDeleteClick = (id) => {
-    const action = actions.deleteEvent(id);
+  const handleDeleteClick = id => {
+    const action = deleteEvent(id);
 
     dispatch(action);
 
     setIsEditorOpen(false);
   };
 
-  const elements = events.map((event) => (
+  const elements = events.map(event => (
     <li
       key={nanoid()}
       className={styles.item}
@@ -71,7 +74,7 @@ const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
           <NewEventForm
             close={closeModal}
             eventHandler={onEventEdit}
-            sign={"edit event"}
+            sign={'edit event'}
             data={selectedEvent}
             setEditedItem={setSelectedEvent}
             handleDeleteClick={handleDeleteClick}

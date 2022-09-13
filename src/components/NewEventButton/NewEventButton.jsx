@@ -1,12 +1,12 @@
-import { memo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { memo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import Modal from "../../shared/components/Modal";
-import NewEventForm from "../NewEventForm";
+import Modal from '../../shared/components/Modal';
+import NewEventForm from '../NewEventForm';
 
-import { actions } from "../../redux/events/events-slice";
+import { addEvent } from '../../redux/events/events-operations';
 
-import styles from "./NewEventButton.module.scss";
+import styles from './NewEventButton.module.scss';
 
 const NewEventButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,8 +14,8 @@ const NewEventButton = () => {
 
   const closeModal = () => setIsModalOpen(false);
 
-  const addNewEvent = (data) => {
-    const action = actions.addEvent(data);
+  const addNewEvent = data => {
+    const action = addEvent(data);
 
     dispatch(action);
   };
@@ -35,7 +35,7 @@ const NewEventButton = () => {
           <NewEventForm
             close={closeModal}
             eventHandler={addNewEvent}
-            sign={"Add New Event"}
+            sign={'Add New Event'}
           />
         </Modal>
       )}
