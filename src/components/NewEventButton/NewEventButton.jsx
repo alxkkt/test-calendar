@@ -1,9 +1,6 @@
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Modal from '../../shared/components/Modal';
-import NewEventForm from '../NewEventForm';
-
 import { addEvent } from '../../redux/events/events-operations';
 
 import styles from './NewEventButton.module.scss';
@@ -21,25 +18,14 @@ const NewEventButton = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <button
-        type="button"
-        aria-label="add event"
-        className={styles.btn}
-        onClick={() => setIsModalOpen(true)}
-      >
-        +
-      </button>
-      {isModalOpen && (
-        <Modal close={closeModal}>
-          <NewEventForm
-            close={closeModal}
-            eventHandler={addNewEvent}
-            sign={'Add New Event'}
-          />
-        </Modal>
-      )}
-    </div>
+    <button
+      type="button"
+      aria-label="add event"
+      className={styles.btn}
+      onClick={() => setIsModalOpen(true)}
+    >
+      +
+    </button>
   );
 };
 

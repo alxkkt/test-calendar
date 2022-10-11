@@ -8,7 +8,6 @@ import monthsList from '../../shared/data/monthsList.json';
 
 const DatePicker = ({ isOpen, togglePicker, date, handleDatePick }) => {
   const [filterDate, setFilterDate] = useState(date);
-  const currentYear = date.getFullYear();
 
   const handleMonthClick = month => {
     const year = filterDate.getFullYear();
@@ -38,15 +37,7 @@ const DatePicker = ({ isOpen, togglePicker, date, handleDatePick }) => {
   }, [handleYearChange]);
 
   const items = monthsList.map(({ id, value }) => (
-    <li
-      key={id}
-      className={
-        Number(id) === filterDate.getMonth() &&
-        currentYear === filterDate.getFullYear()
-          ? `${styles.item} ${styles.current}`
-          : `${styles.item}`
-      }
-    >
+    <li key={id} className={styles.item}>
       <p className={styles.month} onClick={() => handleMonthClick(id)}>
         {value.slice(0, 3)}
       </p>

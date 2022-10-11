@@ -11,8 +11,6 @@ import getAllDaysInMonth from './shared/functions/getAllDaysInMonth';
 import { setFilter } from './redux/events/events-operations';
 import useFilter from './shared/hooks/useFilter';
 
-import './App.scss';
-
 function App() {
   const [date, setDate] = useState(new Date());
   const currentMonthDates = getAllDaysInMonth(
@@ -24,7 +22,6 @@ function App() {
 
   useEffect(() => {
     if (!filter) {
-      console.log('this is first render ever');
       return;
     }
 
@@ -54,6 +51,10 @@ function App() {
     moment(new Date(filter)).format('MM YYYY');
 
   return (
+    // 1. панель управления --
+    // 1а. кнопка добавления события и открытия модалки
+    // 1б. управление фильтром даты
+    // 2. календарь
     <div className="container">
       <NewEventButton />
       {!isToday && (

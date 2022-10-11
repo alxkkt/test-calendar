@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
+import EventsList from '../../EventsList';
+
 import useEventsByDate from '../../../shared/hooks/useEvents';
-import Modal from '../../../shared/components/Modal';
-import NewEventForm from '../../NewEventForm';
 
 import {
   editEvent,
@@ -14,24 +13,13 @@ import {
 
 import styles from './Cell.module.scss';
 
-const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
+const Cell = ({ isCurrentMonth, isToday, day, cellDate, children }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const dispatch = useDispatch();
 
   const events = useEventsByDate(cellDate);
 
-  const closeModal = () => setIsEditorOpen(false);
-
-  const handleEventClick = idx => {
-    const item = events.find(event => event.id === idx);
-
-    setSelectedEvent(item);
-
-    setIsEditorOpen(true);
-  };
-
-  const onEventEdit = () => {
+  const handleEventEdit = () => {
     const changedEvent = events.find(evt => evt.id === selectedEvent.id);
     const action = editEvent({
       ...selectedEvent,
@@ -46,21 +34,11 @@ const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
 
     dispatch(action);
 
-    setIsEditorOpen(false);
+    // setIsEditorOpen(false);
   };
 
-  const elements = events.map(event => (
-    <li
-      key={nanoid()}
-      className={styles.item}
-      onClick={() => handleEventClick(event.id)}
-    >
-      {event.title}
-    </li>
-  ));
-
   return (
-    <td
+    <div
       className={isToday ? `${styles.cell} ${styles.active}` : `${styles.cell}`}
       data-current-month={isCurrentMonth}
     >
@@ -68,20 +46,20 @@ const Cell = ({ isCurrentMonth, isToday, day, cellDate }) => {
         <p className={styles.day}>{day.slice(0, 2)}</p>
         <p className={styles.date}>{cellDate.getDate()}</p>
       </div>
-      <ul className={styles.eventList}>{elements}</ul>
-      {isEditorOpen && (
-        <Modal close={closeModal}>
-          <NewEventForm
-            close={closeModal}
-            eventHandler={onEventEdit}
-            sign={'edit event'}
-            data={selectedEvent}
-            setEditedItem={setSelectedEvent}
-            handleDeleteClick={handleDeleteClick}
-          />
-        </Modal>
-      )}
-    </td>
+      {events.length ? <EventsList events={events} /> : null}
+    </div>
+    // {/* {isEditorOpen && (
+    //   <Modal close={closeModal}>
+    //     <NewEventForm
+    //       close={closeModal}
+    //       eventHandler={handleEventEdit}
+    //       sign={'edit event'}
+    //       data={selectedEvent}
+    //       setEditedItem={setSelectedEvent}
+    //       handleDeleteClick={handleDeleteClick}
+    //     />
+    //   </Modal>
+    // )} */}
   );
 };
 
