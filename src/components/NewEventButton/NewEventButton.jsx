@@ -5,7 +5,7 @@ import { addEvent } from '../../redux/events/events-operations';
 
 import styles from './NewEventButton.module.scss';
 
-const NewEventButton = () => {
+const NewEventButton = ({ onClick }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -18,12 +18,7 @@ const NewEventButton = () => {
   };
 
   return (
-    <button
-      type="button"
-      aria-label="add event"
-      className={styles.btn}
-      onClick={() => setIsModalOpen(true)}
-    >
+    <button type="button" className={styles.btn} onClick={onClick}>
       +
     </button>
   );

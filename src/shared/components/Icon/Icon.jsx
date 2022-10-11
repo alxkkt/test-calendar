@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import Icons from "../../../images/icons.svg";
+import Icons from '../../../images/icons.svg';
 
 const Icon = ({ name, width, height, className }) => {
   return (

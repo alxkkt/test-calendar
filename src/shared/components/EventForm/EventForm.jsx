@@ -1,25 +1,23 @@
-import { memo, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
-import Icon from '../../shared/components/Icon';
+import Icon from '../Icon';
 
-import styles from './NewEventForm.module.scss';
+import styles from './EventForm.module.scss';
 
-const NewEventForm = ({
-  close,
-  eventHandler,
-  sign,
+export default function EventForm({
+  onClose,
+  onSubmit,
+  onDelete,
+  text,
   data = null,
   setEditedItem,
-  handleDeleteClick,
-}) => {
+}) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     date: '',
     time: '',
   });
-  const isEmpty = !formData.title || !formData.date;
 
   useEffect(() => {
     if (!data) return;
@@ -29,10 +27,26 @@ const NewEventForm = ({
     });
   }, [data]);
 
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    // if (data) {
+    //   setEditedItem(prevState => ({
+    //     ...prevState,
+    //     [name]: value,
+    //   }));
+    // }
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
 
-    eventHandler(formData);
+    onSubmit({ ...formData });
 
     setFormData({
       title: '',
@@ -41,23 +55,7 @@ const NewEventForm = ({
       time: '',
     });
 
-    close();
-  };
-
-  const handleInputChange = ({ target }) => {
-    const { name, value } = target;
-
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-
-    if (data) {
-      setEditedItem(prevState => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
+    onClose();
   };
 
   return (
@@ -65,8 +63,8 @@ const NewEventForm = ({
       <form onSubmit={handleSubmit}>
         <div className={styles.topTitle}>
           <div className={styles.signContainer}>
-            <p className={styles.sign}>{sign}</p>
-            {sign === 'edit event' && (
+            <p className={styles.sign}>{text}</p>
+            {/* {sign === 'edit event' && (
               <div className={styles.editIcon}>
                 <Icon
                   name={'edit'}
@@ -75,13 +73,13 @@ const NewEventForm = ({
                   className={styles.icon}
                 />
               </div>
-            )}
+            )} */}
           </div>
-          {sign === 'edit event' && (
+          {/* {sign === 'edit event' && (
             <span className={styles.eventCreated}>
               Created At: {data.createdAt.toString().slice(0, 33)}
             </span>
-          )}
+          )} */}
         </div>
         <div className={styles.titleWrapper}>
           <label className={styles.titleLabel} htmlFor="title">
@@ -91,7 +89,7 @@ const NewEventForm = ({
             name="title"
             className={styles.titleInput}
             value={formData.title}
-            onChange={handleInputChange}
+            onChange={handleChange}
             type="text"
             required={true}
           />
@@ -104,7 +102,7 @@ const NewEventForm = ({
             name="description"
             className={styles.descrInput}
             value={formData.description}
-            onChange={handleInputChange}
+            onChange={handleChange}
             type="text"
             placeholder="Briefly describe your task..."
           ></textarea>
@@ -118,7 +116,7 @@ const NewEventForm = ({
               type="date"
               name="date"
               className={styles.dateInput}
-              onChange={handleInputChange}
+              onChange={handleChange}
               value={formData.date}
             />
           </div>
@@ -130,17 +128,17 @@ const NewEventForm = ({
               type="time"
               name="time"
               className={styles.timeInput}
-              onChange={handleInputChange}
+              onChange={handleChange}
               value={formData.time}
             />
           </div>
         </div>
         <div className={styles.btnContainer}>
-          {sign === 'edit event' && (
+          {text === 'edit event' && (
             <button
               type="button"
               className={styles.deleteBtn}
-              onClick={() => handleDeleteClick(data.id)}
+              onClick={() => onDelete(data.id)}
             >
               <Icon
                 name={'delete'}
@@ -150,27 +148,15 @@ const NewEventForm = ({
               />
             </button>
           )}
-          <button type="submit" disabled={isEmpty} className={styles.saveBtn}>
+          <button
+            type="submit"
+            disabled={!formData.title || !formData.date}
+            className={styles.saveBtn}
+          >
             Save
           </button>
         </div>
       </form>
     </div>
   );
-};
-
-export default memo(NewEventForm);
-
-NewEventForm.propTypes = {
-  close: PropTypes.func.isRequired,
-  eventHandler: PropTypes.func.isRequired,
-  sign: PropTypes.string.isRequired,
-  data: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
-  }),
-  setEditedItem: PropTypes.func,
-  handleDeleteClick: PropTypes.func,
-};
+}

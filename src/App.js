@@ -1,22 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import moment from 'moment';
 
 import Calendar from './components/Calendar';
-import NewEventButton from './components/NewEventButton';
-import Slider from './components/Slider';
-import BackButton from './shared/components/BackButton';
+import AppBar from './components/AppBar';
 
-import getAllDaysInMonth from './shared/functions/getAllDaysInMonth';
 import { setFilter } from './redux/events/events-operations';
 import useFilter from './shared/hooks/useFilter';
 
 function App() {
-  const [date, setDate] = useState(new Date());
-  const currentMonthDates = getAllDaysInMonth(
-    date.getFullYear(),
-    date.getMonth()
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const dispatch = useDispatch();
   const filter = useFilter();
 
@@ -25,13 +17,16 @@ function App() {
       return;
     }
 
-    setDate(new Date(filter));
+    setSelectedDate(new Date(filter));
   }, [filter]);
 
   const handleMonthChange = value => {
-    const newDate = new Date(date.getFullYear(), date.getMonth() + value);
+    const newDate = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth() + value
+    );
 
-    setDate(newDate);
+    setSelectedDate(newDate);
 
     const action = setFilter(newDate);
     dispatch(action);
@@ -40,23 +35,21 @@ function App() {
   const handleDatePick = (year, month) => {
     const newDate = new Date(year, month);
 
-    setDate(newDate);
+    setSelectedDate(newDate);
 
     const action = setFilter(newDate);
     dispatch(action);
   };
 
-  const isToday =
-    moment(new Date()).format('MM YYYY') ===
-    moment(new Date(filter)).format('MM YYYY');
-
   return (
     // 1. панель управления --
-    // 1а. кнопка добавления события и открытия модалки
+    // 1а. кнопка добавления события и открытия модалки ✅
     // 1б. управление фильтром даты
     // 2. календарь
+    // 2a. открытие модалки для изменения события --> функция обработчик
     <div className="container">
-      <NewEventButton />
+      <AppBar />
+      {/* <NewEventButton />
       {!isToday && (
         <BackButton sign={'today'} handleDatePick={handleDatePick} />
       )}
@@ -64,8 +57,8 @@ function App() {
         currentDate={date}
         onMonthChange={handleMonthChange}
         handleDatePick={handleDatePick}
-      />
-      <Calendar currentDate={date} monthDates={currentMonthDates} />
+      /> */}
+      <Calendar currentDate={selectedDate} />
     </div>
   );
 }

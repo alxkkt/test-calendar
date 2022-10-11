@@ -5,27 +5,33 @@ import moment from 'moment';
 
 import Cell from './Cell';
 import getFullMonth from '../../shared/functions/getFullMonth';
+import getAllDaysInMonth from 'shared/functions/getAllDaysInMonth';
 
 import styles from './Calendar.module.scss';
 
-const Calendar = ({ currentDate, monthDates }) => {
-  const fullMonth = useMemo(() => getFullMonth(monthDates), [monthDates]);
+const Calendar = ({ currentDate }) => {
+  const currentMonthDates = getAllDaysInMonth(
+    currentDate.getFullYear(),
+    currentDate.getMonth()
+  );
+
+  const fullMonth = useMemo(
+    () => getFullMonth(currentMonthDates),
+    [currentMonthDates]
+  );
 
   const elements = fullMonth.map(item => {
-    const [day] = item.toString().split(' ');
-
     const isToday =
       moment(item).format('D/MM/YYYY') ===
-      moment(Date.now()).format('D/MM/YYYY');
+      moment(new Date()).format('D/MM/YYYY');
 
     const isCurrentMonth = item.getMonth() === currentDate.getMonth();
 
     return (
       <Cell
-        key={nanoid()}
+        key={item.toString()}
         isCurrentMonth={isCurrentMonth}
         isToday={isToday}
-        day={day}
         cellDate={item}
       />
     );
@@ -43,5 +49,4 @@ export default Calendar;
 
 Calendar.propTypes = {
   currentDate: PropTypes.any.isRequired,
-  monthDates: PropTypes.arrayOf(PropTypes.any.isRequired),
 };

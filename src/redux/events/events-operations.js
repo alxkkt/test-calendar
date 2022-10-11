@@ -67,6 +67,18 @@ export const deleteEvent = createAsyncThunk(
   }
 );
 
+// select edited event
+export const selectEvent = createAsyncThunk(
+  'events/select',
+  (id, { rejectWithValue }) => {
+    try {
+      return id;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
 // set new date filter
 export const setFilter = createAsyncThunk(
   'filter/set',

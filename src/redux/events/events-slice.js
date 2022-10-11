@@ -3,11 +3,13 @@ import {
   addEvent,
   editEvent,
   deleteEvent,
+  selectEvent,
   setFilter,
 } from './events-operations';
 
 const initialState = {
   items: [],
+  selectedEvent: null,
   filter: '',
   isLoading: false,
   error: null,
@@ -59,6 +61,20 @@ const eventsSlice = createSlice({
     [deleteEvent.rejected]: (store, { payload }) => ({
       ...store,
       isLoading: false,
+      error: payload,
+    }),
+    // select edited event
+    [selectEvent.pending]: (store, _) => ({ ...store }),
+    [selectEvent.fulfilled]: (store, { payload }) => {
+      const selectedEvent = store.items.filter(item => item.id === payload);
+
+      return {
+        ...store,
+        selectedEvent,
+      };
+    },
+    [selectEvent.rejected]: (store, { payload }) => ({
+      ...store,
       error: payload,
     }),
     // set new date filter
